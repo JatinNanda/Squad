@@ -119,6 +119,12 @@ public class MainActivity extends ActionBarActivity implements
      ***************************************/
     private Button mPasswordLoginButton;
 
+    /***
+     * create account
+     */
+
+    private Button createAccountButton;
+
     /* *************************************
      *            ANONYMOUSLY              *
      ***************************************/
@@ -192,9 +198,10 @@ public class MainActivity extends ActionBarActivity implements
         mPasswordLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginWithPassword();
+                loginWithVenmo();
             }
         });
+
 
         /* *************************************
          *              ANONYMOUSLY            *
@@ -545,6 +552,10 @@ public class MainActivity extends ActionBarActivity implements
     public void loginWithPassword() {
         mAuthProgressDialog.show();
         mFirebaseRef.authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
+    }
+
+    public void loginWithVenmo(){
+        mAuthProgressDialog.show();
     }
 
     /* ************************************
