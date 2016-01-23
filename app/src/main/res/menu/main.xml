@@ -1,7 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+<<<<<<< HEAD
     tools:context="com.firebase.samples.logindemo.MainActivity">
+=======
+    tools:context="com.swamphacks.squad.MainActivity">
+>>>>>>> 44b9806f1262c7fe55aa65b4497e8db8ae10f0c6
     <item
         android:id="@+id/action_logout"
         android:title="@string/action_logout"
