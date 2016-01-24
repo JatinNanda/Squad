@@ -34,7 +34,8 @@ import com.google.android.gms.plus.Plus;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  * This application demos the use of the Firebase Login feature. It currently supports logging in
  * with Google, Facebook, Twitter, Email/Password, and Anonymous providers.
@@ -73,6 +74,9 @@ public class MainActivity extends ActionBarActivity implements
     /* Listener for Firebase session changes */
     private Firebase.AuthStateListener mAuthStateListener;
 
+    private static ArrayList<Friend> friends;
+    private static ArrayList<Event> events;
+    private static HashMap<Event, List<Friend>> mapping;
     /* *************************************
      *              FACEBOOK               *
      ***************************************/
@@ -133,6 +137,7 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
         /* Load the view and display it */
         setContentView(R.layout.activity_main);
         /* *************************************
@@ -152,8 +157,7 @@ public class MainActivity extends ActionBarActivity implements
          ***************************************/
         mLoggedInStatusTextView = (TextView) findViewById(R.id.login_status);
 
-        /* Create the Firebase ref that is used for all authentication with Firebase */
-        mFirebaseRef = new Firebase(getResources().getString(R.string.firebase_url));
+
 
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
         mAuthProgressDialog = new ProgressDialog(this);

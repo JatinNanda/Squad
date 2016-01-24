@@ -15,56 +15,63 @@
         android:layout_height="wrap_content"
         android:src="@drawable/people"
         android:id="@+id/imageButton"
-        android:layout_marginTop="119dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="142dp"
         android:layout_height="120dp"
-        android:src="@drawable/door"
+        android:src="@drawable/plus"
         android:id="@+id/imageButton2"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/imageButton"
-        android:layout_marginBottom="122dp"
         android:tintMode="src_atop"
-        android:layout_alignRight="@+id/imageButton" />
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/joinView"
+        android:layout_alignLeft="@+id/imageButton"
+        android:layout_alignStart="@+id/imageButton" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:textColor="#f00"
-        android:id="@+id/textView"
+        android:text="Join a group"
+        android:textColor="#f1ecec"
+        android:id="@+id/joinView"
         android:layout_below="@+id/imageButton"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_alignRight="@+id/imageButton"
+        android:layout_alignEnd="@+id/imageButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join Event"
+        android:id="@+id/eventView"
+        android:textIsSelectable="true"
+        android:textSize="20dp"
+        android:textColor="#ece9e9"
+        android:layout_below="@+id/imageButton2"
         android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/imageButton"
-        android:layout_centerHorizontal="true"
-        android:textIsSelectable="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="Form Squad"
+        android:textSize="20dp"
         android:id="@+id/textView3"
-        android:layout_below="@+id/imageButton"
-        android:layout_centerHorizontal="true"
-        android:textColor="#f00" />
+        android:textColor="#f2f2f2"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton3"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/formsquad" />
+        android:src="@drawable/formsquad"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="42dp" />
 
 </RelativeLayout>
