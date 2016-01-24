@@ -30,6 +30,12 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Firebase.setAndroidContext(this);
+        mFirebaseRef = new Firebase(getResources().getString(R.string.firebase_url));
+                        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
+         * user and hide hide any login buttons */
+        mFirebaseRef.addAuthStateListener(mAuthStateListener);
+
     }
 
     @Override
