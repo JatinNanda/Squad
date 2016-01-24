@@ -6,7 +6,6 @@ package com.swamphacks.squad;
 import java.util.List;
 
 public class Event {
-     private List<String> friends;
      private String name;
      private EventEntry entry;
 
