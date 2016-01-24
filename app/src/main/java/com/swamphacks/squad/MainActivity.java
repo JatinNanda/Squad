@@ -36,7 +36,8 @@ import com.google.android.gms.plus.Plus;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  * This application demos the use of the Firebase Login feature. It currently supports logging in
  * with Google, Facebook, Twitter, Email/Password, and Anonymous providers.
@@ -62,6 +63,9 @@ public class MainActivity extends ActionBarActivity implements
     /* TextView that is used to display information about the logged in user */
     private TextView mLoggedInStatusTextView;
 
+    private static ArrayList<String> friends;
+    private static ArrayList<Event> events;
+    private static HashMap<Event, List<String>> mapping;
     /* *************************************
      *              FACEBOOK               *
      ***************************************/
@@ -107,6 +111,12 @@ public class MainActivity extends ActionBarActivity implements
      *              PASSWORD               *
      ***************************************/
     private Button mPasswordLoginButton;
+
+    /***
+     * create account
+     */
+
+    private Button createAccountButton;
 
     /* *************************************
      *            ANONYMOUSLY              *
@@ -188,24 +198,13 @@ public class MainActivity extends ActionBarActivity implements
             }
         });
 
-        /* *************************************
-         *              ANONYMOUSLY            *
-         ***************************************/
-        /* Load and setup the anonymous login button */
-        mAnonymousLoginButton = (Button) findViewById(R.id.login_anonymously);
-        mAnonymousLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginAnonymously();
-            }
-        });
 
         /* *************************************
          *               GENERAL               *
          ***************************************/
         mLoggedInStatusTextView = (TextView) findViewById(R.id.login_status);
 
-        /* Create the Firebase ref that is used for all authentication with Firebase */
+
 
 
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
@@ -528,12 +527,14 @@ public class MainActivity extends ActionBarActivity implements
         MyApplication.mFirebaseRef.authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
     }
 
+
     /*
     Venmo Login
      */
     public void loginWithVenmo(){
         showDialog();
     }
+
     /* ************************************
      *             ANONYMOUSLY            *
      **************************************
