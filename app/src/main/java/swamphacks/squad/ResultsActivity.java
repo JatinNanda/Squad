@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
@@ -59,7 +60,9 @@ public class ResultsActivity extends Activity {
             System.out.println("THE TOTAL BILL IS: " + findTotalAmount());
             displayMessage("Your receipt has been processed successfully!");
         } catch (Exception e) {
-            displayMessage("Error: " + e.getMessage());
+            displayMessage("Error scanning receipt, re-take picture and try again.");
+            Intent myIntent = new Intent(this, MainActivity.class);
+            startActivity(myIntent);
         }
     }
 
