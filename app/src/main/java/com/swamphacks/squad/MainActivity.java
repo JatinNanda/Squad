@@ -55,23 +55,10 @@ public class MainActivity extends ActionBarActivity implements
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    /* *************************************
-     *              GENERAL                *
-     ***************************************/
-    /* TextView that is used to display information about the logged in user */
-    private TextView mLoggedInStatusTextView;
-
     /* A dialog that is presented until the Firebase authentication finished. */
     private ProgressDialog mAuthProgressDialog;
-
-    /* A reference to the Firebase */
-    private Firebase mFirebaseRef;
-
-    /* Data from the authenticated user */
-    private AuthData mAuthData;
-    
-    /* Listener for Firebase session changes */
-    private Firebase.AuthStateListener mAuthStateListener;
+    /* TextView that is used to display information about the logged in user */
+    private TextView mLoggedInStatusTextView;
 
     /* *************************************
      *              FACEBOOK               *
@@ -214,25 +201,15 @@ public class MainActivity extends ActionBarActivity implements
         mLoggedInStatusTextView = (TextView) findViewById(R.id.login_status);
 
         /* Create the Firebase ref that is used for all authentication with Firebase */
-        mFirebaseRef = new Firebase(getResources().getString(R.string.firebase_url));
+
 
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
         mAuthProgressDialog = new ProgressDialog(this);
         mAuthProgressDialog.setTitle("Loading");
         mAuthProgressDialog.setMessage("Authenticating with Firebase...");
         mAuthProgressDialog.setCancelable(false);
-        mAuthProgressDialog.show();
 
-        mAuthStateListener = new Firebase.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(AuthData authData) {
-                mAuthProgressDialog.hide();
-                setAuthenticatedUser(authData);
-            }
-        };
-        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
-         * user and hide hide any login buttons */
-        mFirebaseRef.addAuthStateListener(mAuthStateListener);
+
     }
 
     @Override
@@ -242,9 +219,8 @@ public class MainActivity extends ActionBarActivity implements
         if (mFacebookAccessTokenTracker != null) {
             mFacebookAccessTokenTracker.stopTracking();
         }
-        
-        // if changing configurations, stop tracking firebase session.
-        mFirebaseRef.removeAuthStateListener(mAuthStateListener);
+
+
     }
 
     /**
@@ -278,7 +254,7 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         /* If a user is currently authenticated, display a logout menu */
-        if (this.mAuthData != null) {
+        if (MyApplication.mAuthData != null) {
             getMenuInflater().inflate(R.menu.main, menu);
             return true;
         } else {
@@ -300,15 +276,15 @@ public class MainActivity extends ActionBarActivity implements
      * Unauthenticate from Firebase and from providers where necessary.
      */
     private void logout() {
-        if (this.mAuthData != null) {
+        if (MyApplication.mAuthData != null) {
             /* logout of Firebase */
-            mFirebaseRef.unauth();
+            MyApplication.mFirebaseRef.unauth();
             /* Logout of any of the Frameworks. This step is optional, but ensures the user is not logged into
              * Facebook/Google+ after logging out of Firebase. */
-            if (this.mAuthData.getProvider().equals("facebook")) {
+            if (MyApplication.mAuthData.getProvider().equals("facebook")) {
                 /* Logout from Facebook */
                 LoginManager.getInstance().logOut();
-            } else if (this.mAuthData.getProvider().equals("google")) {
+            } else if (MyApplication.mAuthData.getProvider().equals("google")) {
                 /* Logout from Google+ */
                 if (mGoogleApiClient.isConnected()) {
                     Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -331,10 +307,10 @@ public class MainActivity extends ActionBarActivity implements
             mAuthProgressDialog.show();
             if (provider.equals("twitter")) {
                 // if the provider is twitter, we pust pass in additional options, so use the options endpoint
-                mFirebaseRef.authWithOAuthToken(provider, options, new AuthResultHandler(provider));
+                MyApplication.mFirebaseRef.authWithOAuthToken(provider, options, new AuthResultHandler(provider));
             } else {
                 // if the provider is not twitter, we just need to pass in the oauth_token
-                mFirebaseRef.authWithOAuthToken(provider, options.get("oauth_token"), new AuthResultHandler(provider));
+                MyApplication.mFirebaseRef.authWithOAuthToken(provider, options.get("oauth_token"), new AuthResultHandler(provider));
             }
         }
     }
@@ -375,7 +351,7 @@ public class MainActivity extends ActionBarActivity implements
             mAnonymousLoginButton.setVisibility(View.VISIBLE);
             mLoggedInStatusTextView.setVisibility(View.GONE);
         }
-        this.mAuthData = authData;
+        MyApplication.mAuthData = authData;
         /* invalidate options menu to hide/show the logout button */
         supportInvalidateOptionsMenu();
     }
@@ -424,11 +400,11 @@ public class MainActivity extends ActionBarActivity implements
     private void onFacebookAccessTokenChange(AccessToken token) {
         if (token != null) {
             mAuthProgressDialog.show();
-            mFirebaseRef.authWithOAuthToken("facebook", token.getToken(), new AuthResultHandler("facebook"));
+            MyApplication.mFirebaseRef.authWithOAuthToken("facebook", token.getToken(), new AuthResultHandler("facebook"));
         } else {
             // Logged out of Facebook and currently authenticated with Firebase using Facebook, so do a logout
-            if (this.mAuthData != null && this.mAuthData.getProvider().equals("facebook")) {
-                mFirebaseRef.unauth();
+            if (MyApplication.mAuthData != null && MyApplication.mAuthData.getProvider().equals("facebook")) {
+                MyApplication.mFirebaseRef.unauth();
                 setAuthenticatedUser(null);
             }
         }
@@ -492,7 +468,7 @@ public class MainActivity extends ActionBarActivity implements
                 mGoogleLoginClicked = false;
                 if (token != null) {
                     /* Successfully got OAuth token, now login with Google */
-                    mFirebaseRef.authWithOAuthToken("google", token, new AuthResultHandler("google"));
+                    MyApplication.mFirebaseRef.authWithOAuthToken("google", token, new AuthResultHandler("google"));
                 } else if (errorMessage != null) {
                     mAuthProgressDialog.hide();
                     showErrorDialog(errorMessage);
@@ -544,7 +520,7 @@ public class MainActivity extends ActionBarActivity implements
      */
     public void loginWithPassword() {
         mAuthProgressDialog.show();
-        mFirebaseRef.authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
+        MyApplication.mFirebaseRef.authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
     }
 
     /* ************************************
@@ -553,6 +529,6 @@ public class MainActivity extends ActionBarActivity implements
      */
     private void loginAnonymously() {
         mAuthProgressDialog.show();
-        mFirebaseRef.authAnonymously(new AuthResultHandler("anonymous"));
+        MyApplication.mFirebaseRef.authAnonymously(new AuthResultHandler("anonymous"));
     }
 }
