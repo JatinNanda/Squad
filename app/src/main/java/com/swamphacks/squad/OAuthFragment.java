@@ -39,7 +39,7 @@ public class OAuthFragment extends DialogFragment {
         if (paths.length > 1) {
             MyApplication.token=paths[1];
             this.dismiss();
-            Intent intent = new Intent(getActivity(), FriendActivity.class);
+            Intent intent = new Intent(getActivity(), GroupActivity.class);
             startActivity(intent);
 
             return;

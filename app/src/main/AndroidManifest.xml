@@ -37,6 +37,9 @@
             android:name=".GroupActivity"
             android:label="@string/title_activity_group" />
         <activity
+            android:name=".JoinActivity"
+            android:label="JOINNNN" />
+        <activity
             android:name=".FriendActivity"
             android:label="@string/title_activity_friend">
             <intent-filter>
@@ -45,14 +48,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".SquadActivity"
-            android:label="@string/title_activity_squad">
+            android:name="com.swamphacks.squad.CreateEvent"
+            android:label="Create Event" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.swamphacks.squad.ResultsActivity"
+            android:label="Results" >
         </activity>
     </application>
 

@@ -34,7 +34,7 @@ public class JoinActivity extends ActionBarActivity {
                 if(Database.getElements(code) != null) {
                     Database.saveUser(code, MyApplication.user);
                     MyApplication.user.setCode(code);
-                    startActivity(new Intent(getApplicationContext(), SquadActivity.class));
+                    startActivity(new Intent(getApplicationContext(), CreateEvent.class));
                 } else {
                     Toast.makeText(
                             getApplicationContext(),
