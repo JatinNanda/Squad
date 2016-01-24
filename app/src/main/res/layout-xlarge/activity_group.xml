@@ -13,7 +13,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/people"
+        android:src="@drawable/plus"
         android:id="@+id/imageButton"
         android:layout_marginTop="119dp"
         android:layout_alignParentTop="true"
@@ -24,9 +24,10 @@
         android:layout_height="120dp"
         android:src="@drawable/door"
         android:id="@+id/imageButton2"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="52dp"
+        android:layout_below="@+id/imageButton"
         android:layout_alignLeft="@+id/imageButton"
-        android:layout_marginBottom="122dp"
-        android:tintMode="src_atop"
-        android:layout_alignRight="@+id/imageButton" />
+        android:layout_alignStart="@+id/imageButton"
+        android:layout_alignRight="@+id/imageButton"
+        android:layout_alignEnd="@+id/imageButton" />
 </RelativeLayout>
