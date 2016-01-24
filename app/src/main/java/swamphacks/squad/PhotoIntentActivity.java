@@ -26,6 +26,8 @@ import android.widget.ImageView;
 
 import com.example.android.photobyintent.R;
 
+import org.json.JSONException;
+
 
 public class PhotoIntentActivity extends Activity {
 
@@ -168,8 +170,12 @@ public class PhotoIntentActivity extends Activity {
 			setPic();
 			galleryAddPic();
 			mCurrentPhotoPath = null;
-
 			//if valid, continue, else prompt to retake
+			try {
+				OCRRestClientUsage.getPublicTimeline();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 
 		}
 	}
