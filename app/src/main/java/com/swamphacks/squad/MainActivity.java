@@ -186,7 +186,14 @@ public class MainActivity extends ActionBarActivity implements
                 loginWithTwitter();
             }
         });
-
+        Firebase.setAndroidContext(this);
+        /* Load the view and display it */
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        Slide exitSlide = new Slide();
+        exitSlide.setDuration((long) 10000.0);
+        getWindow().setExitTransition(exitSlide);
+        setContentView(R.layout.activity_main);
+        database = new Database(getApplicationContext());
         /* *************************************
          *               PASSWORD              *
          ***************************************/
