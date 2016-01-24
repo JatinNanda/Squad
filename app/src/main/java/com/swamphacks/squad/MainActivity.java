@@ -135,62 +135,6 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         /* Load the view and display it */
         setContentView(R.layout.activity_main);
-
-        /* *************************************
-         *              FACEBOOK               *
-         ***************************************/
-        /* Load the Facebook login button and set up the tracker to monitor access token changes */
-        mFacebookCallbackManager = CallbackManager.Factory.create();
-        mFacebookLoginButton = (LoginButton) findViewById(R.id.login_with_facebook);
-        mFacebookAccessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                Log.i(TAG, "Facebook.AccessTokenTracker.OnCurrentAccessTokenChanged");
-                MainActivity.this.onFacebookAccessTokenChange(currentAccessToken);
-            }
-        };
-
-        /* *************************************
-         *               GOOGLE                *
-         ***************************************/
-        /* Load the Google login button */
-        mGoogleLoginButton = (SignInButton) findViewById(R.id.login_with_google);
-        mGoogleLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mGoogleLoginClicked = true;
-                if (!mGoogleApiClient.isConnecting()) {
-                    if (mGoogleConnectionResult != null) {
-                        resolveSignInError();
-                    } else if (mGoogleApiClient.isConnected()) {
-                        getGoogleOAuthTokenAndLogin();
-                    } else {
-                    /* connect API now */
-                        Log.d(TAG, "Trying to connect to Google API");
-                        mGoogleApiClient.connect();
-                    }
-                }
-            }
-        });
-        /* Setup the Google API object to allow Google+ logins */
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .build();
-
-        /* *************************************
-         *                TWITTER              *
-         ***************************************/
-        mTwitterLoginButton = (Button) findViewById(R.id.login_with_twitter);
-        mTwitterLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginWithTwitter();
-            }
-        });
-
         /* *************************************
          *               PASSWORD              *
          ***************************************/
@@ -202,18 +146,6 @@ public class MainActivity extends ActionBarActivity implements
             }
         });
 
-
-        /* *************************************
-         *              ANONYMOUSLY            *
-         ***************************************/
-        /* Load and setup the anonymous login button */
-        mAnonymousLoginButton = (Button) findViewById(R.id.login_anonymously);
-        mAnonymousLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginAnonymously();
-            }
-        });
 
         /* *************************************
          *               GENERAL               *

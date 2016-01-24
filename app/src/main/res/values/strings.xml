@@ -12,4 +12,6 @@
     <string name="login_anonymously">Login Anonymously</string>
     <string name="create_account">Create Account</string>
     <string name="title_activity_group">GroupActivity</string>
+    <string name="title_activity_friend">FriendActivity</string>
+    <string name="title_activity_squad">SquadActivity</string>
 </resources>
