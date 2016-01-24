@@ -119,7 +119,10 @@ public class MainActivity extends ActionBarActivity implements
         FacebookSdk.sdkInitialize(getApplicationContext());
         /* Load the view and display it */
         setContentView(R.layout.activity_main);
-
+        MyApplication.mFirebaseRef = new Firebase(getResources().getString(R.string.firebase_url));
+                /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
+         * user and hide hide any login buttons */
+        MyApplication.mFirebaseRef.addAuthStateListener(MyApplication.mAuthStateListener);
         /* *************************************
          *              FACEBOOK               *
          ***************************************/

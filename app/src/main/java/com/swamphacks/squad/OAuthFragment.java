@@ -65,7 +65,7 @@ public class OAuthFragment extends DialogFragment {
         //Retrieve the webview
         View v = inflater.inflate(R.layout.oauth_screen, container, false);
         webViewOauth = (WebView) v.findViewById(R.id.web_oauth);
-        getDialog().setTitle("Use your Instagram account");
+        getDialog().setTitle("Use your Venmo account");
         return v;
     }
 }
