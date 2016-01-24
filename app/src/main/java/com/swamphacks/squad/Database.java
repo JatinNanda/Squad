@@ -25,14 +25,27 @@ public class Database {
     public User getCurrUser() {
         return this.currUser;
     }
+
+    //TODO change input to Squad instead of List<Friend> friends to take into account user.
     public void formSquad(String name, List<Friend> friends) {
            writeDatabase("squads", name, friends);
     }
     public void formEvent(String name, Event event) {
+            event.setOwner(currUser);
            writeDatabase("events", name, event.getFriends());
     }
+
     public void writeDatabase(String child, String key, Object value) {
-        myFirebaseRef.child(this.currUser.getUsername()).child(child).child(key).setValue(value);
+        myFirebaseRef.child(child).child(key).setValue(value);
     }
-    public void ge
-}
+
+    public Squad getSquad(String name) {
+        Squad squad = myFirebaseRef.child("squads").equalto(name);
+        return squad;
+    }
+
+    public Event getEvent(String name) {
+        Event event = myFirebaseRef.child("events").equalto(name);
+        return event;
+    }
+ }

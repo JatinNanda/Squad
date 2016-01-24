@@ -8,9 +8,15 @@ import java.util.List;
 public class Event {
      private List<String> friends;
      private String name;
-     public Event(String n, List<> bobs) {
+     private EventEntry entry;
+
+     public Event() {
+
+     }
+
+     public Event(String u, String n, List<> bobs) {
          this.name = n;
-         this.friends = bobs;
+         this.entry = new EventEntry(u, bobs);
      }
 
      public String getName() {
@@ -18,17 +24,22 @@ public class Event {
      }
 
      public List<String> getFriends() {
-         return this.friends;
+         return entry.getFriends();
      }
 
      public void setName(String n) {
          this.name = n;
      }
      public void addFriend(String friend) {
-         friends.add(friend);
+         entry.add(friend);
      }
      public void deleteFriend(String friend) {
-         friends.remove(friend);
+         entry.remove(friend);
      }
-
+     public void setOwner(String u) {
+         entry.setOwner(u);
+     }
+     public void getOwner() {
+         return entry.getOwner();
+     }
 }
