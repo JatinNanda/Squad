@@ -38,7 +38,7 @@ public class Event {
      public void setOwner(String n) {
          entry.setOwner(n);
      }
-//     public  getOwner() {
-//         return entry.getOwner();
-//     }
+     public String getOwner() {
+         return entry.getOwner();
+     }
 }

@@ -15,7 +15,21 @@ public class Squad {
     public List<String> getFriends() {
         return entry.getFriends();
     }
+    public void addFriend(String s) {
+        entry.addFriend(s);
+    }
+
+    public void deleteFriend(String s) {
+        entry.deleteFriend(s);
+    }
+
     public String getName() {
         return this.name;
+    }
+    public String getOwner() {
+        return entry.getOwner();
+    }
+    public void setOwner(String s) {
+        entry.setOwner(s);
     }
 }
