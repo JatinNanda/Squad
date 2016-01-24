@@ -22,6 +22,9 @@ public class MyApplication extends Application {
     public static Firebase.AuthStateListener mAuthStateListener;
 
     public static String token;
+    public static String user_id;
+
+    public static final String BASE_URL="https://api.venmo.com/v1";
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

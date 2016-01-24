@@ -1,5 +1,6 @@
 package com.swamphacks.squad;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -38,6 +39,8 @@ public class OAuthFragment extends DialogFragment {
         if (paths.length > 1) {
             MyApplication.token=paths[1];
             this.dismiss();
+            Intent intent = new Intent(getActivity(), FriendActivity.class);
+            startActivity(intent);
             return;
         }
     }
@@ -48,7 +51,7 @@ public class OAuthFragment extends DialogFragment {
         try {
             //load the url of the oAuth login page
             webViewOauth
-                    .loadUrl("https://api.venmo.com/v1/oauth/authorize?client_id=3461&scope=make_payments%20access_profile&response_type=token");
+                    .loadUrl("https://api.venmo.com/v1/oauth/authorize?client_id=3461&scope=make_payments%20access_friends%20access_profile&response_type=token");
             //set the web client
             webViewOauth.setWebViewClient(new MyWebViewClient());
             //activates JavaScript (just in case)

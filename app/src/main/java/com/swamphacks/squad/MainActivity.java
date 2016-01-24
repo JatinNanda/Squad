@@ -34,10 +34,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 /**
  * This application demos the use of the Firebase Login feature. It currently supports logging in
  * with Google, Facebook, Twitter, Email/Password, and Anonymous providers.
@@ -129,7 +129,6 @@ public class MainActivity extends ActionBarActivity implements
         FacebookSdk.sdkInitialize(getApplicationContext());
         /* Load the view and display it */
         setContentView(R.layout.activity_main);
-
 
 
         /* *************************************
