@@ -1,8 +1,23 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
+*.iws
+
+# Mac
 .DS_Store
-/build
-/captures
+
+# Maven
+log/
+target/
+
+# Gradle
+.gradle
+
+build/
+
+local.properties
