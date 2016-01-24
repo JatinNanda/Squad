@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Android.demo</string>
     <string name="menu_settings">Settings</string>
+    <color name="squad">#006F00</color>
     <string name="title_activity_main">ABBYY Cloud OCR SDK Demo App</string>
     <string name="fromCamera">Upload a Receipt!</string>
     <string name="fromFile">From File</string>
