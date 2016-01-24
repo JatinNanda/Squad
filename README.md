@@ -1,1 +1,1 @@
-$Quad. Payments made easy.
+$quad. Payments made easy.
