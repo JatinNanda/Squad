@@ -5,6 +5,7 @@ package com.swamphacks.squad;
  */
 public class User {
     private String username;
+    private Event event;
     public User(String uName) {
         this.username = uName;
     }
