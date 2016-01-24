@@ -8,10 +8,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -192,7 +194,7 @@ public class MainActivity extends ActionBarActivity implements
         exitSlide.setDuration((long) 10000.0);
         getWindow().setExitTransition(exitSlide);
         setContentView(R.layout.activity_main);
-        database = new Database(getApplicationContext());
+        Database database = new Database(getApplicationContext());
         /* *************************************
          *               PASSWORD              *
          ***************************************/

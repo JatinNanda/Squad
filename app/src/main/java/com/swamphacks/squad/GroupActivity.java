@@ -2,6 +2,8 @@ package com.swamphacks.squad;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.transition.Slide;
+import android.view.Window;
 
 public class GroupActivity extends ActionBarActivity {
 
