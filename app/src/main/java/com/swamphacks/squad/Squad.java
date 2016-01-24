@@ -6,14 +6,14 @@ package com.swamphacks.squad;
 import java.util.List;
 
 public class Squad {
-    private List<String> friends;
+    private SquadEntry entry;
     private String name;
-    public Squad(List<String> bros, String name) {
-        this.friends = bros;
+    public Squad(String user, List<String> bros, String name) {
         this.name = name;
+        this.entry = new SquadEntry(user, bros);
     }
     public List<String> getFriends() {
-        return this.friends;
+        return entry.getFriends();
     }
     public String getName() {
         return this.name;
