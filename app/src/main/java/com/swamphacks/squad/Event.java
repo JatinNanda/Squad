@@ -8,7 +8,7 @@ import java.util.List;
 public class Event {
      private List<String> friends;
      private String name;
-     public Event(String n, List<> bobs) {
+     public Event(String n, List<String> bobs) {
          this.name = n;
          this.friends = bobs;
      }

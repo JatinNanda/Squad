@@ -27,9 +27,6 @@ public class Database {
     public void updateEvent(Event event) {
            writeDatabase("events", event.getName(), event.getFriends());
     }
-    public void storeAffiliation(User user, Squad squad) {
-
-    }
     public void writeDatabase(String child, String key, Object value) {
         myFirebaseRef.child(this.currUser.getUsername()).child(child).child(key).setValue(value);
     }
