@@ -1,4 +1,4 @@
-package com.firebase.samples.logindemo;
+package com.swamphacks.squad;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -13,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.transition.Slide;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -30,10 +31,14 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
-
+import android.view.Window;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import android.app.ActivityOptions;
+import android.transition.Slide;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This application demos the use of the Firebase Login feature. It currently supports logging in
@@ -45,7 +50,7 @@ import java.util.Map;
  * Facebook provides its own API via the {@link com.facebook.login.widget.LoginButton}.
  * Google provides its own API via the {@link com.google.android.gms.common.api.GoogleApiClient}.
  * Twitter requires us to use a Web View to authenticate, see
- * {@link com.firebase.samples.logindemo.TwitterOAuthActivity}
+ * {@link TwitterOAuthActivity}
  * Email/Password is provided using {@link com.firebase.client.Firebase}
  * Anonymous is provided using {@link com.firebase.client.Firebase}
  */
@@ -69,10 +74,11 @@ public class MainActivity extends ActionBarActivity implements
 
     /* Data from the authenticated user */
     private AuthData mAuthData;
-    
+
     /* Listener for Firebase session changes */
     private Firebase.AuthStateListener mAuthStateListener;
 
+    private static User currUser;
     /* *************************************
      *              FACEBOOK               *
      ***************************************/
@@ -104,6 +110,7 @@ public class MainActivity extends ActionBarActivity implements
      * sign-in. */
     private ConnectionResult mGoogleConnectionResult;
 
+    private Database database;
     /* The login button for Google */
     private SignInButton mGoogleLoginButton;
 
@@ -119,6 +126,12 @@ public class MainActivity extends ActionBarActivity implements
      ***************************************/
     private Button mPasswordLoginButton;
 
+    /***
+     * create account
+     */
+
+    private Button createAccountButton;
+
     /* *************************************
      *            ANONYMOUSLY              *
      ***************************************/
@@ -127,64 +140,14 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
         /* Load the view and display it */
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        Slide exitSlide = new Slide();
+        exitSlide.setDuration((long) 1000.0);
+        getWindow().setExitTransition(exitSlide);
         setContentView(R.layout.activity_main);
-
-        /* *************************************
-         *              FACEBOOK               *
-         ***************************************/
-        /* Load the Facebook login button and set up the tracker to monitor access token changes */
-        mFacebookCallbackManager = CallbackManager.Factory.create();
-        mFacebookLoginButton = (LoginButton) findViewById(R.id.login_with_facebook);
-        mFacebookAccessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                Log.i(TAG, "Facebook.AccessTokenTracker.OnCurrentAccessTokenChanged");
-                MainActivity.this.onFacebookAccessTokenChange(currentAccessToken);
-            }
-        };
-
-        /* *************************************
-         *               GOOGLE                *
-         ***************************************/
-        /* Load the Google login button */
-        mGoogleLoginButton = (SignInButton) findViewById(R.id.login_with_google);
-        mGoogleLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mGoogleLoginClicked = true;
-                if (!mGoogleApiClient.isConnecting()) {
-                    if (mGoogleConnectionResult != null) {
-                        resolveSignInError();
-                    } else if (mGoogleApiClient.isConnected()) {
-                        getGoogleOAuthTokenAndLogin();
-                    } else {
-                    /* connect API now */
-                        Log.d(TAG, "Trying to connect to Google API");
-                        mGoogleApiClient.connect();
-                    }
-                }
-            }
-        });
-        /* Setup the Google API object to allow Google+ logins */
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .build();
-
-        /* *************************************
-         *                TWITTER              *
-         ***************************************/
-        mTwitterLoginButton = (Button) findViewById(R.id.login_with_twitter);
-        mTwitterLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginWithTwitter();
-            }
-        });
-
+        database = new Database(getApplicationContext());
         /* *************************************
          *               PASSWORD              *
          ***************************************/
@@ -192,38 +155,24 @@ public class MainActivity extends ActionBarActivity implements
         mPasswordLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginWithPassword();
+                loginWithVenmo();
             }
         });
 
-        /* *************************************
-         *              ANONYMOUSLY            *
-         ***************************************/
-        /* Load and setup the anonymous login button */
-        mAnonymousLoginButton = (Button) findViewById(R.id.login_anonymously);
-        mAnonymousLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginAnonymously();
-            }
-        });
 
         /* *************************************
          *               GENERAL               *
          ***************************************/
         mLoggedInStatusTextView = (TextView) findViewById(R.id.login_status);
 
-        /* Create the Firebase ref that is used for all authentication with Firebase */
-        mFirebaseRef = new Firebase(getResources().getString(R.string.firebase_url));
-
         /* Setup the progress dialog that is displayed later when authenticating with Firebase */
-        mAuthProgressDialog = new ProgressDialog(this);
+        /*mAuthProgressDialog = new ProgressDialog(this);
         mAuthProgressDialog.setTitle("Loading");
         mAuthProgressDialog.setMessage("Authenticating with Firebase...");
         mAuthProgressDialog.setCancelable(false);
         mAuthProgressDialog.show();
 
-        mAuthStateListener = new Firebase.AuthStateListener() {
+        /*mAuthStateListener = new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
                 mAuthProgressDialog.hide();
@@ -232,7 +181,7 @@ public class MainActivity extends ActionBarActivity implements
         };
         /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
          * user and hide hide any login buttons */
-        mFirebaseRef.addAuthStateListener(mAuthStateListener);
+        //mFirebaseRef.addAuthStateListener(mAuthStateListener);
     }
 
     @Override
@@ -242,9 +191,9 @@ public class MainActivity extends ActionBarActivity implements
         if (mFacebookAccessTokenTracker != null) {
             mFacebookAccessTokenTracker.stopTracking();
         }
-        
+
         // if changing configurations, stop tracking firebase session.
-        mFirebaseRef.removeAuthStateListener(mAuthStateListener);
+        //mFirebaseRef.removeAuthStateListener(mAuthStateListener);
     }
 
     /**
@@ -368,18 +317,21 @@ public class MainActivity extends ActionBarActivity implements
             }
         } else {
             /* No authenticated user show all the login buttons */
-            mFacebookLoginButton.setVisibility(View.VISIBLE);
-            mGoogleLoginButton.setVisibility(View.VISIBLE);
-            mTwitterLoginButton.setVisibility(View.VISIBLE);
+            //mFacebookLoginButton.setVisibility(View.VISIBLE);
+            //mGoogleLoginButton.setVisibility(View.VISIBLE);
+            //mTwitterLoginButton.setVisibility(View.VISIBLE);
             mPasswordLoginButton.setVisibility(View.VISIBLE);
-            mAnonymousLoginButton.setVisibility(View.VISIBLE);
+            //mAnonymousLoginButton.setVisibility(View.VISIBLE);
             mLoggedInStatusTextView.setVisibility(View.GONE);
         }
         this.mAuthData = authData;
         /* invalidate options menu to hide/show the logout button */
         supportInvalidateOptionsMenu();
     }
-
+    public void leaveMain(View v) {
+        Intent intent = new Intent(this, GroupActivity.class);
+        startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
     /**
      * Show errors to users
      */
@@ -547,6 +499,11 @@ public class MainActivity extends ActionBarActivity implements
         mFirebaseRef.authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
     }
 
+    public void loginWithVenmo(){
+        mAuthProgressDialog.show();
+        showDialog();
+    }
+
     /* ************************************
      *             ANONYMOUSLY            *
      **************************************
@@ -555,4 +512,15 @@ public class MainActivity extends ActionBarActivity implements
         mAuthProgressDialog.show();
         mFirebaseRef.authAnonymously(new AuthResultHandler("anonymous"));
     }
+
+    //Display the oAuth web page in a dialog
+    void showDialog() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        OAuthFragment newFragment = new OAuthFragment();
+        newFragment.show(ft, "dialog");
+    }
 }
+
