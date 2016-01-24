@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
@@ -114,6 +116,7 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         /* Load the view and display it */
         setContentView(R.layout.activity_main);
 
@@ -179,7 +182,7 @@ public class MainActivity extends ActionBarActivity implements
         mPasswordLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginWithPassword();
+                loginWithVenmo();
             }
         });
 
@@ -344,11 +347,11 @@ public class MainActivity extends ActionBarActivity implements
             }
         } else {
             /* No authenticated user show all the login buttons */
-            mFacebookLoginButton.setVisibility(View.VISIBLE);
-            mGoogleLoginButton.setVisibility(View.VISIBLE);
-            mTwitterLoginButton.setVisibility(View.VISIBLE);
+            mFacebookLoginButton.setVisibility(View.GONE);
+            mGoogleLoginButton.setVisibility(View.GONE);
+            mTwitterLoginButton.setVisibility(View.GONE);
             mPasswordLoginButton.setVisibility(View.VISIBLE);
-            mAnonymousLoginButton.setVisibility(View.VISIBLE);
+            mAnonymousLoginButton.setVisibility(View.GONE);
             mLoggedInStatusTextView.setVisibility(View.GONE);
         }
         MyApplication.mAuthData = authData;
@@ -523,6 +526,12 @@ public class MainActivity extends ActionBarActivity implements
         MyApplication.mFirebaseRef.authWithPassword("test@firebaseuser.com", "test1234", new AuthResultHandler("password"));
     }
 
+    /*
+    Venmo Login
+     */
+    public void loginWithVenmo(){
+        showDialog();
+    }
     /* ************************************
      *             ANONYMOUSLY            *
      **************************************
@@ -530,5 +539,14 @@ public class MainActivity extends ActionBarActivity implements
     private void loginAnonymously() {
         mAuthProgressDialog.show();
         MyApplication.mFirebaseRef.authAnonymously(new AuthResultHandler("anonymous"));
+    }
+    //Display the oAuth web page in a dialog
+    void showDialog() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        OAuthFragment newFragment = new OAuthFragment();
+        newFragment.show(ft, "dialog");
     }
 }

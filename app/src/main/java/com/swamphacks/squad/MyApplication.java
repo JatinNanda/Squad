@@ -21,6 +21,7 @@ public class MyApplication extends Application {
     /* Listener for Firebase session changes */
     public static Firebase.AuthStateListener mAuthStateListener;
 
+    public static String token;
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

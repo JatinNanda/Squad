@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
-    package="com.firebase.samples.logindemo">
-=======
+
     package="com.swamphacks.squad">
->>>>>>> 44b9806f1262c7fe55aa65b4497e8db8ae10f0c6
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- USE_CREDENTIALS is necessary for Google+ login -->
@@ -13,22 +10,13 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
-<<<<<<< HEAD
-        android:name=".LoginDemoApplication"
-=======
-        android:name="com.swamphacks.squad.LoginDemoApplication"
->>>>>>> 44b9806f1262c7fe55aa65b4497e8db8ae10f0c6
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <activity
-<<<<<<< HEAD
-            android:name=".MainActivity"
-=======
             android:name="com.swamphacks.squad.MainActivity"
->>>>>>> 44b9806f1262c7fe55aa65b4497e8db8ae10f0c6
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,13 +24,7 @@
             </intent-filter>
         </activity>
 
-<<<<<<< HEAD
-        <activity android:name=".TwitterOAuthActivity" />
-=======
         <activity android:name="com.swamphacks.squad.TwitterOAuthActivity" />
->>>>>>> 44b9806f1262c7fe55aa65b4497e8db8ae10f0c6
-
-        <activity android:name="com.facebook.FacebookActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
